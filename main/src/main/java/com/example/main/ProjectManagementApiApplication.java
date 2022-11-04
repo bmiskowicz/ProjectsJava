@@ -8,6 +8,7 @@ public class ProjectManagementApiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ProjectManagementApiApplication.class, args);
+		System.out.println("http://localhost:8080/swagger.html");
 	}
 
 }
