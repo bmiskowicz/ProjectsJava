@@ -1,9 +1,7 @@
 package com.example.main.entity.workspace;
 
 import com.example.main.entity.Profile;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
@@ -11,7 +9,9 @@ import java.time.ZonedDateTime;
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(schema = "workspaces", name="message")
 public class Message {
     @Id

@@ -17,5 +17,5 @@ public class ProfileRequest {
     private byte icon;
     private ZonedDateTime creationDate;
     @NotNull
-    private Long id;
+    private Long profileId;
 }

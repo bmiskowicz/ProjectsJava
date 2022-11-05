@@ -1,16 +1,17 @@
 package com.example.main.entity.workspace;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(schema = "workspaces", name="chat")
 public class Chat {
     @Id
@@ -23,6 +24,7 @@ public class Chat {
     private Long issueId;
 
     @OneToMany(mappedBy = "chat")
-    private Set<Message> messageSet;
+    @Builder.Default
+    private Set<Message> messageSet = new HashSet<>();
 
 }

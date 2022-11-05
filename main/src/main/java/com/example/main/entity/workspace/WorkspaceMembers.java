@@ -3,9 +3,7 @@ package com.example.main.entity.workspace;
 
 import com.example.main.entity.Profile;
 import com.example.main.util.WorkspaceRole;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -13,7 +11,9 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(schema = "workspaces", name="workspaceMembers")
 public class WorkspaceMembers {
 

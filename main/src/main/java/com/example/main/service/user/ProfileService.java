@@ -34,14 +34,18 @@ public class ProfileService {
     }
 
     public ProfileResponse createProfile(Login login){
-        Profile profile = new Profile(login.getId(), login.getUsername());
+        Profile profile = Profile.builder()
+                .profileId(login.getLoginId())
+                .login(login)
+                .build();
+        profileRepository.save(profile);
         return new ProfileResponse(profile);
     }
 
     public ProfileResponse updateProfile(ProfileRequest profileRequest){
         Profile profile = null;
-        if(profileRepository.existsById(profileRequest.getId())) {
-            profile = profileRepository.findById(profileRequest.getId()).get();
+        if(profileRepository.existsById(profileRequest.getProfileId())) {
+            profile = profileRepository.findById(profileRequest.getProfileId()).get();
             profile.setIcon(profileRequest.getIcon());
         }
         return new ProfileResponse(profile);

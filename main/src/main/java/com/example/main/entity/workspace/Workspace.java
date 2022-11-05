@@ -1,17 +1,18 @@
 package com.example.main.entity.workspace;
 
 import com.sun.istack.Nullable;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(schema = "workspaces", name="workspace")
 public class Workspace {
 
@@ -28,39 +29,7 @@ public class Workspace {
     private String workspaceDescription;
 
     @OneToMany(mappedBy = "workspace")
-    private Set<WorkspaceMembers> workspaceMembersSet;
+    @Builder.Default
+    private Set<WorkspaceMembers> workspaceMembersSet = new HashSet<>();
 
-    public Workspace(Long workspaceId, String workspaceName, String workspaceDescription) {
-        this.workspaceId = workspaceId;
-        this.workspaceName = workspaceName;
-        this.workspaceDescription = workspaceDescription;
-    }
-
-    public Long getWorkspaceId() {
-        return workspaceId;
-    }
-
-    public String getWorkspaceName() {
-        return workspaceName;
-    }
-
-    public void setWorkspaceName(String workspaceName) {
-        this.workspaceName = workspaceName;
-    }
-
-    public String getWorkspaceDescription() {
-        return workspaceDescription;
-    }
-
-    public void setWorkspaceDescription(String workspaceDescription) {
-        this.workspaceDescription = workspaceDescription;
-    }
-
-    public Set<WorkspaceMembers> getWorkspaceMembersSet() {
-        return workspaceMembersSet;
-    }
-
-    public void setWorkspaceMembersSet(Set<WorkspaceMembers> workspaceMembersSet) {
-        this.workspaceMembersSet = workspaceMembersSet;
-    }
 }

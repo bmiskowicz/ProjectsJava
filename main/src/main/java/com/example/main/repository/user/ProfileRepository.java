@@ -1,6 +1,7 @@
 package com.example.main.repository.user;
 
 import com.example.main.entity.Profile;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -15,7 +16,7 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
     List<Profile> findAll(Sort sort);
     List<Profile> findAllById(Iterable<Long> longs);
     Optional<Profile> findById(Long aLong);
-    Optional<Profile> findByUsername(String username);
+
 
     boolean existsById(Long aLong);
     void deleteById(Long aLong);

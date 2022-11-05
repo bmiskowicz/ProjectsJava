@@ -10,7 +10,7 @@ import java.time.ZonedDateTime;
 @Setter
 @Getter
 public class ProfileResponse {
-    private Long id;
+    private Long profileId;
     private String username;
 
     @Nullable
@@ -18,8 +18,8 @@ public class ProfileResponse {
     private ZonedDateTime creationDate;
 
     public ProfileResponse(Profile profile) {
-        this.id = profile.getProfileId();
-        this.username = profile.getUsername();
+        this.profileId = profile.getProfileId();
+        this.username = profile.getLogin().getUsername();
         try{
             this.icon = profile.getIcon();
         }catch (NullPointerException e){};

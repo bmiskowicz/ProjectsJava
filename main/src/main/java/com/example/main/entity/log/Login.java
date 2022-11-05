@@ -14,18 +14,19 @@ import java.util.Set;
 @Table(uniqueConstraints = {
         @UniqueConstraint(columnNames = "username"),
         @UniqueConstraint(columnNames = "email")
-},schema = "security")
+},schema = "security", name = "login")
 @Builder
 
 public class Login {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
-    private Long id;
+    private Long loginId;
     @Column(nullable = false)
     private String username;
     @Column(unique = true, nullable = false)
     private String email;
+
     @Column(nullable = false)
     private String password;
     @ManyToMany(fetch = FetchType.LAZY)
