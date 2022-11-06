@@ -1,5 +1,6 @@
-package com.example.main.DTO.request.user;
+package com.example.main.DTO.request.workspace;
 
+import com.example.main.entity.workspace.Chat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,10 +13,11 @@ import java.time.ZonedDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProfileRequest {
-    private String username;
-    private byte icon;
-    private ZonedDateTime creationDate;
+public class MessageRequest {
     @NotNull
+    private Long messageId;
+    private Chat chat;
     private Long profileId;
+    private ZonedDateTime creationDate;
+    private String content;
 }

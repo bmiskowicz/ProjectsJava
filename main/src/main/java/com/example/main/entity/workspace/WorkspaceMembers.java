@@ -18,7 +18,6 @@ import javax.persistence.*;
 public class WorkspaceMembers {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false, name = "workspaceMembersId")
     private Long workspaceMembersId;
 

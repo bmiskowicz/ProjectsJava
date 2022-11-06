@@ -15,7 +15,6 @@ import java.time.ZonedDateTime;
 @Table(schema = "workspaces", name="message")
 public class Message {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false, name = "messageId")
     private Long messageId;
 

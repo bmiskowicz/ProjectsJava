@@ -1,11 +1,11 @@
-package com.example.main.service.user;
+package com.example.main.service;
 
 
-import com.example.main.DTO.request.user.ProfileRequest;
-import com.example.main.DTO.response.user.ProfileResponse;
+import com.example.main.DTO.request.ProfileRequest;
+import com.example.main.DTO.response.ProfileResponse;
 import com.example.main.entity.log.Login;
 import com.example.main.entity.Profile;
-import com.example.main.repository.user.ProfileRepository;
+import com.example.main.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

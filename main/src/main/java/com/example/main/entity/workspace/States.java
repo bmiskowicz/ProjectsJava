@@ -13,8 +13,8 @@ import javax.persistence.*;
 @Builder
 @Table(schema = "workspaces", name="states")
 public class States {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false, name = "stateId")
     private Long stateId;
 

@@ -14,8 +14,8 @@ import java.util.Set;
 @Builder
 @Table(schema = "workspaces", name="chat")
 public class Chat {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false, name = "chatId")
     private Long chatId;
 

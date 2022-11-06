@@ -16,10 +16,13 @@ import java.util.Set;
 @Builder
 @Table(schema = "workspaces", name="issue")
 public class Issue {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false, name = "issue_id")
     private Long issueId;
+
+    @Column(unique = true, nullable = false)
+    private String issueName;
 
     @OneToMany(mappedBy = "issue")
     @Builder.Default
@@ -28,9 +31,6 @@ public class Issue {
     @Column(name = "workspaceId")
     @JoinColumn(table="workspace", nullable = false)
     private Long workspaceId;
-
-    @Column(unique = true, nullable = false)
-    private String issueName;
 
     @Column(nullable = false)
     private ZonedDateTime creationDate = ZonedDateTime.now();
@@ -44,5 +44,5 @@ public class Issue {
 
     @OneToMany(mappedBy = "issue")
     @Builder.Default
-    private Set<States> states = new HashSet<>();
+    private Set<States> statesSet = new HashSet<>();
 }

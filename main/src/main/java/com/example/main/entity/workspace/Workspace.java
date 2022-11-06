@@ -17,7 +17,6 @@ import java.util.Set;
 public class Workspace {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false, name = "workspaceId")
     private Long workspaceId;
 

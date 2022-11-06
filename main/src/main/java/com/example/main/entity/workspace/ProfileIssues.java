@@ -15,7 +15,6 @@ import javax.persistence.*;
 public class ProfileIssues {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false, name = "piId")
     private Long piId;
 
