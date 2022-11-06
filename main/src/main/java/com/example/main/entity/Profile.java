@@ -3,6 +3,7 @@ package com.example.main.entity;
 import com.example.main.entity.log.Login;
 import com.example.main.entity.workspace.ProfileIssues;
 import com.example.main.entity.workspace.WorkspaceMembers;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.Nullable;
 import lombok.*;
 
@@ -25,7 +26,7 @@ public class Profile {
     private Long profileId;
 
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="loginId", nullable = false)
     private Login login;
 
@@ -38,10 +39,13 @@ public class Profile {
     @Builder.Default
     private ZonedDateTime creationDate = ZonedDateTime.now();
 
+
+    @JsonManagedReference
     @OneToMany(mappedBy = "profile")
     @Builder.Default
     private Set<WorkspaceMembers> workspaceMembersSet = new HashSet<>();
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "profile")
     @Builder.Default
     private Set<ProfileIssues> profileIssuesSet = new HashSet<>();

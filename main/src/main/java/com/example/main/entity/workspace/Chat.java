@@ -1,5 +1,6 @@
 package com.example.main.entity.workspace;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,6 +24,7 @@ public class Chat {
     @JoinColumn(table="issue", nullable = false)
     private Long issueId;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "chat")
     @Builder.Default
     private Set<Message> messageSet = new HashSet<>();

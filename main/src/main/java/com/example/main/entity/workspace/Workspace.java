@@ -1,5 +1,6 @@
 package com.example.main.entity.workspace;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.Nullable;
 import lombok.*;
 
@@ -27,6 +28,7 @@ public class Workspace {
     @Nullable
     private String workspaceDescription;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "workspace")
     @Builder.Default
     private Set<WorkspaceMembers> workspaceMembersSet = new HashSet<>();

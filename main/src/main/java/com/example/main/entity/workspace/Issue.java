@@ -1,6 +1,7 @@
 package com.example.main.entity.workspace;
 
 import com.example.main.util.IssueState;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,7 +25,8 @@ public class Issue {
     @Column(unique = true, nullable = false)
     private String issueName;
 
-    @OneToMany(mappedBy = "issue")
+    @JsonManagedReference
+    @OneToMany(mappedBy = "issue", fetch = FetchType.LAZY)
     @Builder.Default
     private Set<ProfileIssues> profileIssuesSet = new HashSet<>();
 
@@ -42,6 +44,7 @@ public class Issue {
     private IssueState state;
 
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "issue")
     @Builder.Default
     private Set<States> statesSet = new HashSet<>();

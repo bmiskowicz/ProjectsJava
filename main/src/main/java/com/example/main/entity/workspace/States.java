@@ -1,6 +1,7 @@
 package com.example.main.entity.workspace;
 
 import com.example.main.util.IssueState;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ public class States {
     @Column(unique = true, nullable = false, name = "stateId")
     private Long stateId;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "issueId")
     private Issue issue;

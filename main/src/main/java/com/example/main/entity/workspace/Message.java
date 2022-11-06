@@ -1,6 +1,7 @@
 package com.example.main.entity.workspace;
 
 import com.example.main.entity.Profile;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ public class Message {
     @Column(unique = true, nullable = false, name = "messageId")
     private Long messageId;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "chat_id")
     private Chat chat;
