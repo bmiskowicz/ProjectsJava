@@ -10,34 +10,30 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@EnableGlobalMethodSecurity(
+        prePostEnabled = true)
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    LoginDetailsService loginDetailsService;
 
     @Autowired
-    private LoginDetailsService loginDetailsService;
-
-    @Autowired
-    private AuthEntryPoint authEntryPoint;
+    private AuthEntryPoint unauthorizedHandler;
 
     @Bean
-    public AuthFilter authFilter() {return new AuthFilter();}
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public AuthTokenFilter authenticationJwtTokenFilter() {
+        return new AuthTokenFilter();
     }
 
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder
-                .userDetailsService(loginDetailsService)
-                .passwordEncoder(passwordEncoder());
+        authenticationManagerBuilder.userDetailsService(loginDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Bean
@@ -46,17 +42,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .cors().and().csrf().disable().authorizeHttpRequests()
-                .antMatchers("/api/auth/**").permitAll().anyRequest().permitAll().and()
-                .formLogin().loginPage("/login").failureUrl("/loginZepsuty").and()
-                .logout().logoutSuccessUrl("/").and()
-                .exceptionHandling().accessDeniedPage("/index")
-                .and().httpBasic().authenticationEntryPoint(authEntryPoint);
+                .csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .authorizeRequests().antMatchers("/**").permitAll()
+                .antMatchers("/**").permitAll()
+                .anyRequest().permitAll();
 
-        http.addFilterBefore(authFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
-
 }

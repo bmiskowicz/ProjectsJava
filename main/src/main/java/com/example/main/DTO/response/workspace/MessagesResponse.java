@@ -10,7 +10,7 @@ import java.time.ZonedDateTime;
 
 @Setter
 @Getter
-public class MessageResponse {
+public class MessagesResponse {
     @NotNull
     private Long messageId;
     private Chat chat;
@@ -18,7 +18,7 @@ public class MessageResponse {
     private ZonedDateTime creationDate;
     private String content;
 
-    public MessageResponse(Message message) {
+    public MessagesResponse(Message message) {
         this.messageId = message.getMessageId();
         this.chat = message.getChat();
         this.profileId = message.getProfileId();

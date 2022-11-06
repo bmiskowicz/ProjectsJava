@@ -1,12 +1,15 @@
 package com.example.main.config.security;
 
 import com.example.main.entity.log.Login;
+import com.example.main.repository.log.LoginRepository;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Collection;
 import java.util.List;
@@ -82,5 +85,14 @@ public class UserDetailsImplementation implements UserDetails {
         if (o == null || getClass() != o.getClass()) return false;
         UserDetailsImplementation that = (UserDetailsImplementation) o;
         return Objects.equals(getUsername(), that.getUsername());
+    }
+
+    @Autowired
+    LoginRepository loginRepository;
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Login login = loginRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
+
+        return UserDetailsImplementation.build(login);
     }
 }

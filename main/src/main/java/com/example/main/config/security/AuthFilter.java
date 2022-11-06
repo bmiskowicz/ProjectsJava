@@ -19,7 +19,7 @@ import java.util.Locale;
 public class AuthFilter extends OncePerRequestFilter {
 
     @Autowired
-    private JWTTokenProvider jwtTokenProvider;
+    private JWTUtils jwtUtils;
 
     @Autowired
     private LoginDetailsService loginDetailsService;
@@ -28,8 +28,8 @@ public class AuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             String jwt = getJwtFromRequest(request);
-            if (StringUtils.hasText(jwt) && jwtTokenProvider.validateToken(jwt)) {
-                String username = jwtTokenProvider.getUsernameFromJWT(jwt).toLowerCase(Locale.ROOT);
+            if (StringUtils.hasText(jwt) && jwtUtils.validateJwtToken(jwt)) {
+                String username = jwtUtils.getUserNameFromJwtToken(jwt).toLowerCase(Locale.ROOT);
                 UserDetails userDetails = loginDetailsService.loadUserByUsername(username.toLowerCase(Locale.ROOT));
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

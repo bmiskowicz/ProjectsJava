@@ -39,7 +39,6 @@ public class Profile {
     @Builder.Default
     private ZonedDateTime creationDate = ZonedDateTime.now();
 
-
     @JsonManagedReference
     @OneToMany(mappedBy = "profile")
     @Builder.Default

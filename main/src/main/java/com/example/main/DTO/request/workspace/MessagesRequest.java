@@ -13,7 +13,7 @@ import java.time.ZonedDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MessageRequest {
+public class MessagesRequest {
     @NotNull
     private Long messageId;
     private Chat chat;

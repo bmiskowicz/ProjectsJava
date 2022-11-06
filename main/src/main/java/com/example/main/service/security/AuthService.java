@@ -2,7 +2,7 @@ package com.example.main.service.security;
 
 import com.example.main.DTO.request.log.AuthRequest;
 import com.example.main.DTO.response.log.AuthResponse;
-import com.example.main.config.security.JWTTokenProvider;
+import com.example.main.config.security.JWTUtils;
 import com.example.main.config.security.UserDetailsImplementation;
 import com.example.main.repository.log.LoginRepository;
 import com.example.main.repository.log.RoleRepository;
@@ -28,13 +28,13 @@ public class AuthService {
     AuthenticationManager authenticationManager;
 
     @Autowired
-    JWTTokenProvider jwtTokenProvider;
+    JWTUtils jwtUtils;
 
     public AuthResponse getAuthToken(AuthRequest authRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtTokenProvider.generateToken(authentication);
+        String jwt = jwtUtils.generateTokenFromUsername(authentication.getName());
         UserDetailsImplementation userDetailsImpl = (UserDetailsImplementation) authentication.getPrincipal();
         List<String> roles = userDetailsImpl.getAuthorities().stream()
                 .map(item -> item.getAuthority())

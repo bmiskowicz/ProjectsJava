@@ -1,7 +1,7 @@
 package com.example.main.service.workspace;
 
-import com.example.main.DTO.request.workspace.MessageRequest;
-import com.example.main.DTO.response.workspace.MessageResponse;
+import com.example.main.DTO.request.workspace.MessagesRequest;
+import com.example.main.DTO.response.workspace.MessagesResponse;
 import com.example.main.entity.workspace.Message;
 import com.example.main.repository.workspace.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,39 +16,39 @@ public class MessageService {
     @Autowired
     private MessageRepository messageRepository;
 
-    public List<MessageResponse> getAllMessages() {
+    public List<MessagesResponse> getAllMessages() {
         return messageRepository.findAll().stream()
-                .map(MessageResponse::new)
+                .map(MessagesResponse::new)
                 .collect(Collectors.toList());
     }
 
-    public MessageResponse getMessage(Long id){
+    public MessagesResponse getMessage(Long id){
         Message message = null;
         if(messageRepository.existsById(id)) {
             message = messageRepository.findById(id).get();
         }
-        return new MessageResponse(message);
+        return new MessagesResponse(message);
 
     }
 
-    public MessageResponse createMessage(MessageRequest messageRequest){
+    public MessagesResponse createMessage(MessagesRequest messagesRequest){
         Message message = Message.builder()
-                .messageId(messageRequest.getMessageId())
-                .chat(messageRequest.getChat())
-                .content(messageRequest.getContent())
-                .profileId(messageRequest.getProfileId())
+                .messageId(messagesRequest.getMessageId())
+                .chat(messagesRequest.getChat())
+                .content(messagesRequest.getContent())
+                .profileId(messagesRequest.getProfileId())
                 .build();
         messageRepository.save(message);
-        return new MessageResponse(message);
+        return new MessagesResponse(message);
     }
 
-    public MessageResponse updateMessage(MessageRequest messageRequest){
+    public MessagesResponse updateMessage(MessagesRequest messagesRequest){
         Message message = null;
-        if(messageRepository.existsById(messageRequest.getMessageId())) {
-            message = messageRepository.findById(messageRequest.getMessageId()).get();
-            message.setContent(messageRequest.getContent());
+        if(messageRepository.existsById(messagesRequest.getMessageId())) {
+            message = messageRepository.findById(messagesRequest.getMessageId()).get();
+            message.setContent(messagesRequest.getContent());
         }
-        return new MessageResponse(message);
+        return new MessagesResponse(message);
     }
 
     public void deleteMessage(Long id){
