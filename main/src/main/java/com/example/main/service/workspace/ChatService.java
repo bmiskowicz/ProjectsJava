@@ -45,6 +45,7 @@ public class ChatService {
         if(chatRepository.existsById(chatRequest.getChatId())) {
             chat = chatRepository.findById(chatRequest.getChatId()).get();
             chat.setMessageSet(chatRequest.getMessageSet());
+            chatRepository.save(chat);
         }
         return new ChatResponse(chat);
     }

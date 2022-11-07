@@ -25,6 +25,9 @@ public class LoginResponse {
     @NotNull
     private String email;
 
+    @NotNull
+    private boolean enabled;
+
     private Set<Role> roles;
 
     public Set<Role> getRoles() {
@@ -37,5 +40,6 @@ public class LoginResponse {
         loginId = login.getLoginId();
         username = login.getUsername();
         email = login.getEmail();
+        enabled = login.isEnabled();
     }
 }

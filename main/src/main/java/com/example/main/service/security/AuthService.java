@@ -41,4 +41,6 @@ public class AuthService {
                 .collect(Collectors.toList());
         return new AuthResponse(userDetailsImpl.getId(), jwt, userDetailsImpl.getUsername(), userDetailsImpl.getEmail(), roles);
     }
+
+
 }

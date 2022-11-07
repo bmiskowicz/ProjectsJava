@@ -1,7 +1,7 @@
 package com.example.main.controller.workspace;
 
-import com.example.main.DTO.request.workspace.MessagesRequest;
-import com.example.main.DTO.response.workspace.MessagesResponse;
+import com.example.main.DTO.request.workspace.MessageRequest;
+import com.example.main.DTO.response.workspace.MessageResponse;
 import com.example.main.service.workspace.MessageService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,30 +12,30 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/messages")
-public class MessagesController {
+public class MessageController {
     @Autowired
     private MessageService messageService;
 
 
     @GetMapping("")
-    public List<MessagesResponse> getAllMessages() {
+    public List<MessageResponse> getAllMessages() {
         return messageService.getAllMessages();
     }
 
     @GetMapping("/{id}")
-    public MessagesResponse getMessage(@PathVariable Long id){
+    public MessageResponse getMessage(@PathVariable Long id){
         return messageService.getMessage(id);
     }
 
     @PutMapping("/{id}/update")
-    public ResponseEntity<?> updateMessage(MessagesRequest messagesRequest){
-        MessagesResponse messagesResponse = messageService.updateMessage(messagesRequest);
-        return ResponseEntity.ok(messagesResponse);
+    public ResponseEntity<?> updateMessage(MessageRequest messageRequest){
+        MessageResponse messageResponse = messageService.updateMessage(messageRequest);
+        return ResponseEntity.ok(messageResponse);
     }
 
     @PostMapping("/post")
-    public ResponseEntity<?> postMessage(MessagesRequest messagesRequest){
-        MessagesResponse messagesResponse = messageService.createMessage(messagesRequest);
-        return ResponseEntity.ok(messagesResponse);
+    public ResponseEntity<?> postMessage(MessageRequest messageRequest){
+        MessageResponse messageResponse = messageService.createMessage(messageRequest);
+        return ResponseEntity.ok(messageResponse);
     }
 }

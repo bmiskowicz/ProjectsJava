@@ -56,6 +56,7 @@ public class IssueService {
             issue.setState(issueRequest.getState());
             issue.setDeadline(issueRequest.getDeadline());
             issue.setStatesSet(issueRequest.getStates());
+            issueRepository.save(issue);
         }
         return new IssueResponse(issue);
     }

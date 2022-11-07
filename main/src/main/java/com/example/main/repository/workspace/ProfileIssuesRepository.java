@@ -3,10 +3,12 @@ package com.example.main.repository.workspace;
 import com.example.main.entity.workspace.ProfileIssues;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface ProfileIssuesRepository extends JpaRepository<ProfileIssues, Long> {
 
     Optional<ProfileIssues> findById(Long aLong);

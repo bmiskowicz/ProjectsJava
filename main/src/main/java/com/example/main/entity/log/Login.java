@@ -31,6 +31,9 @@ public class Login {
     @Column(nullable = false)
     private String password;
 
+    @Column(name = "enabled")
+    private boolean enabled;
+
     @JsonManagedReference
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable( schema="security",	name = "login_roles",
@@ -39,9 +42,8 @@ public class Login {
     private Set<Role> roles = new HashSet<>();
 
 
-
-
     public Login() {
-
+        super();
+        this.enabled=false;
     }
 }

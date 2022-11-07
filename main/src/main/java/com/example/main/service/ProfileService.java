@@ -47,6 +47,7 @@ public class ProfileService {
         if(profileRepository.existsById(profileRequest.getProfileId())) {
             profile = profileRepository.findById(profileRequest.getProfileId()).get();
             profile.setIcon(profileRequest.getIcon());
+            profileRepository.save(profile);
         }
         return new ProfileResponse(profile);
     }

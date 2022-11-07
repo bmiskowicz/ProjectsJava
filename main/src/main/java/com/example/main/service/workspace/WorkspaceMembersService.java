@@ -47,6 +47,7 @@ public class WorkspaceMembersService {
         if(workspaceMembersRepository.existsById(workspaceMembersRequest.getWorkspaceMembersId())) {
             workspaceMembers = workspaceMembersRepository.findById(workspaceMembersRequest.getWorkspaceMembersId()).get();
             workspaceMembers.setRole(workspaceMembers.getRole());
+            workspaceMembersRepository.save(workspaceMembers);
         }
         return new WorkspaceMembersResponse(workspaceMembers);
     }

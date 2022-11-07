@@ -36,11 +36,4 @@ public class ProfilesController {
         return ResponseEntity.ok(profileResponse);
     }
 
-    /*TODO: delete it and add creating projects in SignUp function  */
-    @PostMapping("/post")
-    public ResponseEntity<?> postProfile(LoginRequest loginRequest){
-        Login login = loginRepository.findById(1L).get();
-        ProfileResponse profileResponse = profileService.createProfile(login);
-        return ResponseEntity.ok(profileResponse);
-    }
 }

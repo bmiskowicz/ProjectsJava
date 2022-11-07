@@ -1,43 +1,36 @@
 package com.example.main.controller.security;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import com.example.main.DTO.request.log.LoginRequest;
 import com.example.main.DTO.response.log.LoginResponse;
-import com.example.main.DTO.response.workspace.MessagesResponse;
 import com.example.main.config.security.JWTUtils;
 import com.example.main.config.security.UserDetailsImplementation;
-import com.example.main.entity.log.Login;
-import com.example.main.entity.log.Role;
+import com.example.main.entity.log.VerificationToken;
 import com.example.main.repository.log.LoginRepository;
-import com.example.main.repository.log.RoleRepository;
-import com.example.main.util.Roles;
+import com.example.main.repository.log.VerificationTokenRepository;
+import com.example.main.service.security.LoginService;
+import com.example.main.service.security.VerificationTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("")
 public class AuthController {
     @Autowired
     AuthenticationManager authenticationManager;
@@ -46,7 +39,12 @@ public class AuthController {
     LoginRepository loginRepository;
 
     @Autowired
-    RoleRepository roleRepository;
+    VerificationTokenRepository verificationTokenRepository;
+    @Autowired
+    LoginService loginService;
+
+    @Autowired
+    VerificationTokenService verificationTokenService;
 
     @Autowired
     PasswordEncoder encoder;
@@ -54,8 +52,23 @@ public class AuthController {
     @Autowired
     JWTUtils jwtUtils;
 
-    @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    @GetMapping("/registrationConfirm/{token}")
+    public ResponseEntity<?> confirmUser(@PathVariable String token){
+        try {
+            Optional<VerificationToken> verificationToken = verificationTokenRepository.findByToken(token);
+            String email = verificationToken.get().getUnverifiedUserEmail();
+            verificationTokenRepository.deleteByToken(token);
+            loginService.verifyLogin(email);
+
+            return ResponseEntity.ok().body("Verified successfully");
+        }
+        catch (Exception e){
+            return ResponseEntity.ok().body("Verification code not found");
+        }
+    }
+
+    @PostMapping("api/auth/signin")
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -67,15 +80,15 @@ public class AuthController {
         ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
 
         List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
+                .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
                 .body("Logged in successfully");
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody LoginRequest loginRequest) {
+    @PostMapping("api/auth/signup")
+    public ResponseEntity<?> registerUser(@RequestBody LoginRequest loginRequest) {
         if (loginRepository.existsByUsername(loginRequest.getUsername())) {
             return ResponseEntity.badRequest().body(ResponseEntity.ok("Error: Username is already taken!"));
         }
@@ -84,20 +97,14 @@ public class AuthController {
             return ResponseEntity.badRequest().body(ResponseEntity.ok("Error: Email is already in use!"));
         }
 
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        LoginResponse loginResponse = loginService.createLogin(loginRequest);
+        verificationTokenService.sendVerificationToken(loginRequest.getEmail());
 
-        // Create new user's account
-        Login login = new Login();
-        login.setUsername(loginRequest.getUsername());
-        login.setEmail(loginRequest.getEmail());
-        login.setPassword(passwordEncoder.encode(loginRequest.getPassword()));
-        login.setRoles(loginRequest.getRoles());
-        loginRepository.save(login);
 
-        return (ResponseEntity<String>) ResponseEntity.ok("User registered successfully!");
+        return (ResponseEntity<String>) ResponseEntity.ok("User registered successfully with " + loginResponse.getUsername());
     }
 
-    @PostMapping("/signout")
+    @PostMapping("api/auth/signout")
     public ResponseEntity<?> logoutUser() {
         ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())

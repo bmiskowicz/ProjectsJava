@@ -50,6 +50,7 @@ public class WorkspaceService {
             workspace.setWorkspaceName(workspaceRequest.getWorkspaceName());
             workspace.setWorkspaceDescription(workspaceRequest.getWorkspaceDescription());
             workspace.setWorkspaceMembersSet(workspaceRequest.getWorkspaceMembersSet());
+            workspaceRepository.save(workspace);
         }
         return new WorkspaceResponse(workspace);
     }

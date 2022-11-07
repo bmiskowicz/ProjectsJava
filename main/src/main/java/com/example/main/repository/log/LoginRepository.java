@@ -13,7 +13,7 @@ public interface LoginRepository  extends JpaRepository<Login, Long> {
     @Override
     Optional<Login> findById(Long aLong);
 
-    Optional<Login> findByEmail(String email);
+    Login findByEmail(String email);
 
     boolean existsByUsername(String username);
 
