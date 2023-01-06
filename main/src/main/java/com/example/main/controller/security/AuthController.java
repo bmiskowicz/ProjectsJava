@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import com.example.main.DTO.request.log.AuthRequest;
 import com.example.main.DTO.request.log.LoginRequest;
 import com.example.main.DTO.response.log.LoginResponse;
 import com.example.main.config.security.JWTUtils;
@@ -13,6 +14,7 @@ import com.example.main.config.security.UserDetailsImplementation;
 import com.example.main.entity.log.VerificationToken;
 import com.example.main.repository.log.LoginRepository;
 import com.example.main.repository.log.VerificationTokenRepository;
+import com.example.main.service.security.AuthService;
 import com.example.main.service.security.LoginService;
 import com.example.main.service.security.VerificationTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,25 +68,15 @@ public class AuthController {
             return ResponseEntity.ok().body("Verification code not found");
         }
     }
+    {
 
+    }
+    @Autowired
+    AuthService authService;
     @PostMapping("api/auth/signin")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
 
-        Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        UserDetailsImplementation userDetails = (UserDetailsImplementation) authentication.getPrincipal();
-
-        ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
-
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-                .body("Logged in successfully");
+    public ResponseEntity<?> getToken(@Valid @RequestBody AuthRequest loginRequest){
+        return ResponseEntity.ok(authService.getAuthToken(loginRequest));
     }
 
     @PostMapping("api/auth/signup")

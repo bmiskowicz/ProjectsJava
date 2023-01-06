@@ -37,7 +37,7 @@ public class WorkspaceService {
                 .workspaceName(workspaceRequest.getWorkspaceName())
                 .workspaceDescription(workspaceRequest.getWorkspaceDescription())
                 //.workspaceMembersSet(workspaceRequest.getWorkspaceMembersSet())
-                //TODO: Wiadomo
+                //TODO: TODO: SPRAWDIZĆ CZY BUILDER TWORZY SAM workspaceMembersSet
                 .build();
         workspaceRepository.save(workspace);
         return new WorkspaceResponse(workspace);

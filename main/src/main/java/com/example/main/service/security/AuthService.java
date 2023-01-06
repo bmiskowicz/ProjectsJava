@@ -42,5 +42,4 @@ public class AuthService {
         return new AuthResponse(userDetailsImpl.getId(), jwt, userDetailsImpl.getUsername(), userDetailsImpl.getEmail(), roles);
     }
 
-
 }
