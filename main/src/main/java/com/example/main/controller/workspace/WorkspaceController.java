@@ -3,11 +3,14 @@ package com.example.main.controller.workspace;
 import com.example.main.DTO.request.workspace.WorkspaceRequest;
 import com.example.main.DTO.response.workspace.WorkspaceResponse;
 import com.example.main.service.workspace.WorkspaceService;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -34,8 +37,8 @@ public class WorkspaceController {
     }
 
     @PostMapping("/post")
-    public ResponseEntity<?> postWorkspace(WorkspaceRequest workspaceRequest){
-        WorkspaceResponse workspaceResponse = workspaceService.createWorkspace(workspaceRequest);
+    public ResponseEntity<?> postWorkspace(WorkspaceRequest workspaceRequest, HttpServletRequest httpRequest){
+        WorkspaceResponse workspaceResponse = workspaceService.createWorkspace(workspaceRequest, httpRequest);
         return ResponseEntity.ok(workspaceResponse);
     }
 }

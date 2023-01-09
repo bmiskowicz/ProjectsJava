@@ -22,6 +22,6 @@ public class AuthRequest {
 
     public AuthRequest(LoginRequest loginRequest){
         this.username = loginRequest.getUsername();
-        this.password=loginRequest.getPassword();
+        this.password = loginRequest.getPassword();
     }
 }

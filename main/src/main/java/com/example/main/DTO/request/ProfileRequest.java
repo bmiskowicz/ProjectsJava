@@ -19,9 +19,15 @@ import java.util.Set;
 public class ProfileRequest {
     @NotNull
     private Long profileId;
+    @NotNull
     private Login login;
     private byte icon;
-    private ZonedDateTime creationDate;
-    private Set<WorkspaceMembers> workspaceMembersSet;
-    private Set<ProfileIssues> profileIssuesSet;
+    @NotNull
+    private String username;
+
+    @NotNull
+    private String password;
+
+    @NotNull
+    private String email;
 }

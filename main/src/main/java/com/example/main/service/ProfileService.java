@@ -6,6 +6,7 @@ import com.example.main.DTO.response.ProfileResponse;
 import com.example.main.entity.log.Login;
 import com.example.main.entity.Profile;
 import com.example.main.repository.ProfileRepository;
+import com.example.main.repository.log.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,8 @@ public class ProfileService {
 
     @Autowired
     private ProfileRepository profileRepository;
+    @Autowired
+    LoginRepository loginRepository;
 
     public List<ProfileResponse> getAllProfiles() {
         return profileRepository.findAll().stream()
@@ -46,6 +49,11 @@ public class ProfileService {
         Profile profile = null;
         if(profileRepository.existsById(profileRequest.getProfileId())) {
             profile = profileRepository.findById(profileRequest.getProfileId()).get();
+            Login login = profile.getLogin();
+            login.setUsername(profileRequest.getUsername());
+            login.setEmail(profileRequest.getEmail());
+            login.setPassword(profileRequest.getPassword());
+            loginRepository.save(login);
             profile.setIcon(profileRequest.getIcon());
             profileRepository.save(profile);
         }
@@ -55,7 +63,9 @@ public class ProfileService {
     public void deleteProfile(Long id){
         if(profileRepository.existsById(id)) {
             Profile profile = profileRepository.findById(id).get();
+            Login login = profile.getLogin();
             profileRepository.delete(profile);
+            loginRepository.delete(login);
         }
     }
 }

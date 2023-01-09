@@ -2,11 +2,20 @@ package com.example.main.service.workspace;
 
 import com.example.main.DTO.request.workspace.WorkspaceRequest;
 import com.example.main.DTO.response.workspace.WorkspaceResponse;
+import com.example.main.config.security.JWTUtils;
+import com.example.main.entity.Profile;
+import com.example.main.entity.log.Login;
 import com.example.main.entity.workspace.Workspace;
+import com.example.main.entity.workspace.WorkspaceMembers;
+import com.example.main.repository.ProfileRepository;
+import com.example.main.repository.log.LoginRepository;
+import com.example.main.repository.workspace.WorkspaceMembersRepository;
 import com.example.main.repository.workspace.WorkspaceRepository;
+import com.example.main.util.WorkspaceRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,6 +24,19 @@ public class WorkspaceService {
 
     @Autowired
     private WorkspaceRepository workspaceRepository;
+
+    @Autowired
+    LoginRepository loginRepository;
+
+    @Autowired
+    ProfileRepository profileRepository;
+
+    @Autowired
+    WorkspaceMembersRepository workspaceMembersRepository;
+
+    @Autowired
+    JWTUtils jwtUtils;
+
 
     public List<WorkspaceResponse> getAllWorkspaces() {
         return workspaceRepository.findAll().stream()
@@ -31,15 +53,21 @@ public class WorkspaceService {
 
     }
 
-    public WorkspaceResponse createWorkspace(WorkspaceRequest workspaceRequest){
+    public WorkspaceResponse createWorkspace(WorkspaceRequest workspaceRequest, HttpServletRequest httpRequest){
         Workspace workspace = Workspace.builder()
-                .workspaceId(workspaceRequest.getWorkspaceId())
                 .workspaceName(workspaceRequest.getWorkspaceName())
                 .workspaceDescription(workspaceRequest.getWorkspaceDescription())
                 //.workspaceMembersSet(workspaceRequest.getWorkspaceMembersSet())
-                //TODO: TODO: SPRAWDIZĆ CZY BUILDER TWORZY SAM workspaceMembersSet
+                //TODO: TODO: SPRAWDZIĆ CZY BUILDER TWORZY SAM workspaceMembersSet
                 .build();
+        String token = httpRequest.getHeader("Authorization");
+        System.out.println(token);
+        String username = jwtUtils.getUserNameFromJwtToken(token);
+        Login login = loginRepository.findByUsername(username).get();
+        Profile profile = profileRepository.findById(login.getLoginId()).get();
+        WorkspaceMembers workspaceMembers = WorkspaceMembers.builder().workspace(workspace).role(WorkspaceRole.ADMIN).profile(profile).build();
         workspaceRepository.save(workspace);
+        workspaceMembersRepository.save(workspaceMembers);
         return new WorkspaceResponse(workspace);
     }
 

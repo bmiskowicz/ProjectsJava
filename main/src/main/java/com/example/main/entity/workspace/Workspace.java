@@ -10,14 +10,15 @@ import java.util.Set;
 
 @Getter
 @Setter
-@Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Table(schema = "workspaces", name="workspace")
+@Entity
 public class Workspace {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "auto_gen3")
     @Column(unique = true, nullable = false, name = "workspaceId")
     private Long workspaceId;
 

@@ -11,14 +11,15 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Table(schema = "workspaces", name="workspaceMembers")
+@Entity
 public class WorkspaceMembers {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "auto_gen4")
     @Column(unique = true, nullable = false, name = "workspaceMembersId")
     private Long workspaceMembersId;
 
