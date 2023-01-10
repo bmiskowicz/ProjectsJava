@@ -19,8 +19,13 @@ public class WorkspaceMembersController {
 
 
     @GetMapping("")
-    public List<WorkspaceMembersResponse> getAllWorkspaceMemberss() {
-        return workspaceMembersService.getAllWorkspaceMemberss();
+    public List<WorkspaceMembersResponse> getAllWorkspaceMembers() {
+        return workspaceMembersService.getAllWorkspaceMembers();
+    }
+
+    @GetMapping("/workspace/{id}")
+    public List<WorkspaceMembersResponse> getAllWorkspaceMembers(@PathVariable Long id) {
+        return workspaceMembersService.getAllWorkspaceMembersById(id);
     }
 
     @GetMapping("/{id}")

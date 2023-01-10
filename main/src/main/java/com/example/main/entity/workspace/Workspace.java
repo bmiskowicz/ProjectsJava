@@ -30,7 +30,7 @@ public class Workspace {
     private String workspaceDescription;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "workspace")
+    @OneToMany(mappedBy = "workspace", fetch = FetchType.LAZY)
     @Builder.Default
     private Set<WorkspaceMembers> workspaceMembersSet = new HashSet<>();
 

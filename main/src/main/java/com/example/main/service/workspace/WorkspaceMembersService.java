@@ -2,8 +2,10 @@ package com.example.main.service.workspace;
 
 import com.example.main.DTO.request.workspace.WorkspaceMembersRequest;
 import com.example.main.DTO.response.workspace.WorkspaceMembersResponse;
+import com.example.main.entity.workspace.Workspace;
 import com.example.main.entity.workspace.WorkspaceMembers;
 import com.example.main.repository.workspace.WorkspaceMembersRepository;
+import com.example.main.repository.workspace.WorkspaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +18,17 @@ public class WorkspaceMembersService {
     @Autowired
     private WorkspaceMembersRepository workspaceMembersRepository;
 
-    public List<WorkspaceMembersResponse> getAllWorkspaceMemberss() {
+    @Autowired
+    private WorkspaceRepository workspaceRepository;
+    public List<WorkspaceMembersResponse> getAllWorkspaceMembers() {
         return workspaceMembersRepository.findAll().stream()
+                .map(WorkspaceMembersResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<WorkspaceMembersResponse> getAllWorkspaceMembersById(Long id) {
+        Workspace workspace = workspaceRepository.findById(id).get();
+        return workspaceMembersRepository.findAllByWorkspace(workspace).stream()
                 .map(WorkspaceMembersResponse::new)
                 .collect(Collectors.toList());
     }

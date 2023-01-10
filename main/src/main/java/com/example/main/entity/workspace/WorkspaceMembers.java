@@ -5,6 +5,8 @@ import com.example.main.entity.Profile;
 import com.example.main.util.WorkspaceRole;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 

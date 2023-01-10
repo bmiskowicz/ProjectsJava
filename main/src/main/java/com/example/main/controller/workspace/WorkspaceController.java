@@ -4,6 +4,7 @@ import com.example.main.DTO.request.workspace.WorkspaceRequest;
 import com.example.main.DTO.response.workspace.WorkspaceResponse;
 import com.example.main.service.workspace.WorkspaceService;
 import org.springframework.http.HttpRequest;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+@Transactional
 @RestController
 @RequestMapping("/workspace")
 public class WorkspaceController {
@@ -34,6 +36,12 @@ public class WorkspaceController {
     public ResponseEntity<?> updateWorkspace(WorkspaceRequest workspaceRequest){
         WorkspaceResponse workspaceResponse = workspaceService.updateWorkspace(workspaceRequest);
         return ResponseEntity.ok(workspaceResponse);
+    }
+
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<?> deleteWorkspace(@PathVariable Long id){
+        workspaceService.deleteWorkspace(id);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/post")

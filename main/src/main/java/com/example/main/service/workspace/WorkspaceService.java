@@ -14,12 +14,14 @@ import com.example.main.repository.workspace.WorkspaceRepository;
 import com.example.main.util.WorkspaceRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class WorkspaceService {
 
     @Autowired
@@ -57,8 +59,6 @@ public class WorkspaceService {
         Workspace workspace = Workspace.builder()
                 .workspaceName(workspaceRequest.getWorkspaceName())
                 .workspaceDescription(workspaceRequest.getWorkspaceDescription())
-                //.workspaceMembersSet(workspaceRequest.getWorkspaceMembersSet())
-                //TODO: TODO: SPRAWDZIĆ CZY BUILDER TWORZY SAM workspaceMembersSet
                 .build();
         String token = httpRequest.getHeader("Authorization");
         System.out.println(token);
@@ -86,6 +86,7 @@ public class WorkspaceService {
     public void deleteWorkspace(Long id){
         if(workspaceRepository.existsById(id)) {
             Workspace workspace = workspaceRepository.findById(id).get();
+            workspaceMembersRepository.deleteAllByWorkspace(workspace);
             workspaceRepository.delete(workspace);
         }
     }

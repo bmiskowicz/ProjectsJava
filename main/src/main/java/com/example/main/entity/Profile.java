@@ -40,12 +40,12 @@ public class Profile {
     private ZonedDateTime creationDate = ZonedDateTime.now();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "profile")
+    @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
     @Builder.Default
     private Set<WorkspaceMembers> workspaceMembersSet = new HashSet<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "profile")
+    @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
     @Builder.Default
     private Set<ProfileIssues> profileIssuesSet = new HashSet<>();
 
