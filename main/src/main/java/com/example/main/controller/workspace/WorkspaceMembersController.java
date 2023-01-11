@@ -34,8 +34,8 @@ public class WorkspaceMembersController {
     }
 
     @PutMapping("/{id}/update")
-    public ResponseEntity<?> updateWorkspaceMembers(WorkspaceMembersRequest workspaceMembersRequest){
-        WorkspaceMembersResponse workspaceMembersResponse = workspaceMembersService.updateWorkspaceMembers(workspaceMembersRequest);
+    public ResponseEntity<?> updateWorkspaceMembers(WorkspaceMembersRequest workspaceMembersRequest, @PathVariable Long id){
+        WorkspaceMembersResponse workspaceMembersResponse = workspaceMembersService.updateWorkspaceMembers(workspaceMembersRequest, id);
         return ResponseEntity.ok(workspaceMembersResponse);
     }
 

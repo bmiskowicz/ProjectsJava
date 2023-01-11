@@ -71,10 +71,10 @@ public class WorkspaceService {
         return new WorkspaceResponse(workspace);
     }
 
-    public WorkspaceResponse updateWorkspace(WorkspaceRequest workspaceRequest){
+    public WorkspaceResponse updateWorkspace(WorkspaceRequest workspaceRequest, Long id){
         Workspace workspace = null;
-        if(workspaceRepository.existsById(workspaceRequest.getWorkspaceId())) {
-            workspace = workspaceRepository.findById(workspaceRequest.getWorkspaceId()).get();
+        if(workspaceRepository.existsById(id)) {
+            workspace = workspaceRepository.findById(id).get();
             workspace.setWorkspaceName(workspaceRequest.getWorkspaceName());
             workspace.setWorkspaceDescription(workspaceRequest.getWorkspaceDescription());
             workspace.setWorkspaceMembersSet(workspaceRequest.getWorkspaceMembersSet());

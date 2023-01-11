@@ -33,8 +33,8 @@ public class WorkspaceController {
     }
 
     @PutMapping("/{id}/update")
-    public ResponseEntity<?> updateWorkspace(WorkspaceRequest workspaceRequest){
-        WorkspaceResponse workspaceResponse = workspaceService.updateWorkspace(workspaceRequest);
+    public ResponseEntity<?> updateWorkspace(WorkspaceRequest workspaceRequest, @PathVariable Long id){
+        WorkspaceResponse workspaceResponse = workspaceService.updateWorkspace(workspaceRequest, id);
         return ResponseEntity.ok(workspaceResponse);
     }
 

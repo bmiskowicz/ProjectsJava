@@ -53,11 +53,11 @@ public class WorkspaceMembersService {
         return new WorkspaceMembersResponse(workspaceMembers);
     }
 
-    public WorkspaceMembersResponse updateWorkspaceMembers(WorkspaceMembersRequest workspaceMembersRequest){
+    public WorkspaceMembersResponse updateWorkspaceMembers(WorkspaceMembersRequest workspaceMembersRequest, Long id){
         WorkspaceMembers workspaceMembers = null;
-        if(workspaceMembersRepository.existsById(workspaceMembersRequest.getWorkspaceMembersId())) {
-            workspaceMembers = workspaceMembersRepository.findById(workspaceMembersRequest.getWorkspaceMembersId()).get();
-            workspaceMembers.setRole(workspaceMembers.getRole());
+        if(workspaceMembersRepository.existsById(id)) {
+            workspaceMembers = workspaceMembersRepository.findById(id).get();
+            workspaceMembers.setRole(workspaceMembersRequest.getRole());
             workspaceMembersRepository.save(workspaceMembers);
         }
         return new WorkspaceMembersResponse(workspaceMembers);
