@@ -21,7 +21,7 @@ import javax.persistence.*;
 public class WorkspaceMembers {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "auto_gen4")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(unique = true, nullable = false, name = "workspaceMembersId")
     private Long workspaceMembersId;
 

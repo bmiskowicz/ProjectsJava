@@ -3,6 +3,7 @@ package com.example.main.service.workspace;
 import com.example.main.DTO.request.workspace.ProfileIssuesRequest;
 import com.example.main.DTO.response.workspace.ProfileIssuesResponse;
 import com.example.main.entity.workspace.ProfileIssues;
+import com.example.main.repository.workspace.IssueRepository;
 import com.example.main.repository.workspace.ProfileIssuesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,9 @@ public class ProfileIssuesService {
     @Autowired
     private ProfileIssuesRepository profileIssuesRepository;
 
+    @Autowired
+    private IssueRepository issueRepository;
+
     public List<ProfileIssuesResponse> getAllProfileIssues() {
         return profileIssuesRepository.findAll().stream()
                 .map(ProfileIssuesResponse::new)
@@ -28,7 +32,6 @@ public class ProfileIssuesService {
             profileIssues = profileIssuesRepository.findById(id).get();
         }
         return new ProfileIssuesResponse(profileIssues);
-
     }
 
     public ProfileIssuesResponse createProfileIssues(ProfileIssuesRequest profileIssuesRequest){

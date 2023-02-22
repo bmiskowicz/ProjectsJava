@@ -61,7 +61,6 @@ public class WorkspaceService {
                 .workspaceDescription(workspaceRequest.getWorkspaceDescription())
                 .build();
         String token = httpRequest.getHeader("Authorization");
-        System.out.println(token);
         String username = jwtUtils.getUserNameFromJwtToken(token);
         Login login = loginRepository.findByUsername(username).get();
         Profile profile = profileRepository.findById(login.getLoginId()).get();

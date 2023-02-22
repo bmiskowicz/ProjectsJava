@@ -19,6 +19,7 @@ import java.util.Set;
 public class Issue {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(unique = true, nullable = false, name = "issue_id")
     private Long issueId;
 
@@ -35,13 +36,15 @@ public class Issue {
     private Long workspaceId;
 
     @Column(nullable = false)
+    @Builder.Default
     private ZonedDateTime creationDate = ZonedDateTime.now();
 
     @Column()
     private ZonedDateTime deadline;
 
     @Column(nullable = false)
-    private IssueState state;
+    @Builder.Default
+    private IssueState state = IssueState.OPEN;
 
 
     @JsonManagedReference

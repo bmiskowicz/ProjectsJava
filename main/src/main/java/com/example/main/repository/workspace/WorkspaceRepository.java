@@ -2,6 +2,7 @@ package com.example.main.repository.workspace;
 
 import com.example.main.entity.workspace.Workspace;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

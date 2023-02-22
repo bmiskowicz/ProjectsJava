@@ -28,7 +28,6 @@ public class ProfileIssuesController {
         return profileIssueService.getProfileIssues(id);
     }
 
-
     @PostMapping("/post")
     public ResponseEntity<?> postProfileIssue(ProfileIssuesRequest profileIssueRequest){
         ProfileIssuesResponse profileIssueResponse = profileIssueService.createProfileIssues(profileIssueRequest);

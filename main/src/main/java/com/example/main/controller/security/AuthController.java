@@ -74,7 +74,6 @@ public class AuthController {
     @Autowired
     AuthService authService;
     @PostMapping("api/auth/signin")
-
     public ResponseEntity<?> getToken(@Valid @RequestBody AuthRequest loginRequest){
         return ResponseEntity.ok(authService.getAuthToken(loginRequest));
     }

@@ -16,6 +16,7 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
     List<Issue> findAll(Sort sort);
 
     List<Issue> findAllById(Iterable<Long> longs);
+    List<Issue> findAllByWorkspaceId(Long aLong);
 
     Optional<Issue> findById(Long aLong);
 

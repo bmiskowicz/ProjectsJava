@@ -2,19 +2,34 @@ package com.example.main.service.workspace;
 
 import com.example.main.DTO.request.workspace.IssueRequest;
 import com.example.main.DTO.response.workspace.IssueResponse;
+import com.example.main.DTO.response.workspace.ProfileIssuesResponse;
 import com.example.main.entity.workspace.Issue;
+import com.example.main.entity.workspace.ProfileIssues;
 import com.example.main.repository.workspace.IssueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class IssueService {
+    final static DateTimeFormatter formatter  = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 
     @Autowired
     private IssueRepository issueRepository;
+
+    public IssueResponse getIssue(Long id) {
+        Issue issue = null;
+        if(issueRepository.existsById(id)) {
+            issue = issueRepository.findById(id).get();
+        }
+        return new IssueResponse(issue);
+    }
 
     public List<IssueResponse> getAllIssues() {
         return issueRepository.findAll().stream()
@@ -22,26 +37,22 @@ public class IssueService {
                 .collect(Collectors.toList());
     }
 
-    public IssueResponse getIssue(Long id){
-        Issue issue = null;
-        if(issueRepository.existsById(id)) {
-            issue = issueRepository.findById(id).get();
-        }
-        return new IssueResponse(issue);
-
+    public List<IssueResponse> getAllWorkspaceIssues(Long along) {
+        return issueRepository.findAllByWorkspaceId(along).stream()
+                .map(IssueResponse::new)
+                .collect(Collectors.toList());
     }
 
-    public IssueResponse createIssue(IssueRequest issueRequest){
+
+
+    public IssueResponse createIssue(String date, IssueRequest issueRequest){
+        LocalDate date2 = LocalDate.parse(date, formatter);
+        ZonedDateTime result = date2.atStartOfDay(ZoneId.systemDefault());
+
         Issue issue = Issue.builder()
-                .issueId(issueRequest.getIssueId())
-                //.profileIssuesSet(issueRequest.getProfileIssuesSet())
-                //TODO: SPRAWDIZĆ CZY BUILDER TWORZY SAM profileIssuesSet
                 .issueName(issueRequest.getIssueName())
                 .workspaceId(issueRequest.getWorkspaceId())
-                .deadline(issueRequest.getDeadline())
-                .state(issueRequest.getState())
-                //.statesSet(issueRequest.getStates())
-                //TODO: SPRAWDIZĆ CZY BUILDER TWORZY SAM statesSet
+                .deadline(result)
                 .build();
         issueRepository.save(issue);
         return new IssueResponse(issue);
