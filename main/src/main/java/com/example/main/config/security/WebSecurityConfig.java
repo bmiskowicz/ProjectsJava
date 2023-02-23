@@ -68,7 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter  {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable().authorizeHttpRequests()
-                .antMatchers("/api/auth/signout").permitAll().anyRequest().permitAll().and()
+                .antMatchers("/api/auth/signin").permitAll().anyRequest().permitAll().and()
                 .exceptionHandling().accessDeniedPage("/index");
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

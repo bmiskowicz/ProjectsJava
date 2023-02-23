@@ -34,8 +34,8 @@ public class IssueController {
     }
 
     @PutMapping("/{id}/update")
-    public ResponseEntity<?> updateIssue(IssueRequest issueRequest){
-        IssueResponse issueResponse = issueService.updateIssue(issueRequest);
+    public ResponseEntity<?> updateIssue(String deadlined, IssueRequest issueRequest){
+        IssueResponse issueResponse = issueService.updateIssue(deadlined, issueRequest);
         return ResponseEntity.ok(issueResponse);
     }
 

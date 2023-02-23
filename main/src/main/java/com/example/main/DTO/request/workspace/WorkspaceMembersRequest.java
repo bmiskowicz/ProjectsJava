@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 public class WorkspaceMembersRequest {
     @NotNull
     private Long workspaceMembersId;
-    private Profile profile;
-    private Workspace workspace;
+    private Long profileId;
+    private Long workspaceId;
     private WorkspaceRole role;
 }

@@ -16,6 +16,6 @@ import javax.validation.constraints.NotNull;
 public class ProfileIssuesRequest {
     @NotNull
     private Long piId;
-    private Profile profile;
-    private Issue issue;
+    private Long profileId;
+    private Long issueId;
 }

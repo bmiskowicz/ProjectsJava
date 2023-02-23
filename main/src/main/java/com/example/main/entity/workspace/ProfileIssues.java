@@ -16,6 +16,7 @@ import javax.persistence.*;
 public class ProfileIssues {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(unique = true, nullable = false, name = "piId")
     private Long piId;
 

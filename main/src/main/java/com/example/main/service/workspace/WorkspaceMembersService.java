@@ -2,8 +2,12 @@ package com.example.main.service.workspace;
 
 import com.example.main.DTO.request.workspace.WorkspaceMembersRequest;
 import com.example.main.DTO.response.workspace.WorkspaceMembersResponse;
+import com.example.main.entity.Profile;
+import com.example.main.entity.workspace.Issue;
 import com.example.main.entity.workspace.Workspace;
 import com.example.main.entity.workspace.WorkspaceMembers;
+import com.example.main.repository.ProfileRepository;
+import com.example.main.repository.workspace.IssueRepository;
 import com.example.main.repository.workspace.WorkspaceMembersRepository;
 import com.example.main.repository.workspace.WorkspaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +21,11 @@ public class WorkspaceMembersService {
 
     @Autowired
     private WorkspaceMembersRepository workspaceMembersRepository;
-
     @Autowired
     private WorkspaceRepository workspaceRepository;
+    @Autowired
+    private ProfileRepository profileRepository;
+
     public List<WorkspaceMembersResponse> getAllWorkspaceMembers() {
         return workspaceMembersRepository.findAll().stream()
                 .map(WorkspaceMembersResponse::new)
@@ -43,10 +49,13 @@ public class WorkspaceMembersService {
     }
 
     public WorkspaceMembersResponse createWorkspaceMembers(WorkspaceMembersRequest workspaceMembersRequest){
+        Profile profile = profileRepository.findById(workspaceMembersRequest.getProfileId()).get();
+        Workspace workspace = workspaceRepository.findById(workspaceMembersRequest.getWorkspaceId()).get();
+
         WorkspaceMembers workspaceMembers = WorkspaceMembers.builder()
                 .workspaceMembersId(workspaceMembersRequest.getWorkspaceMembersId())
-                .workspace(workspaceMembersRequest.getWorkspace())
-                .profile(workspaceMembersRequest.getProfile())
+                .workspace(workspace)
+                .profile(profile)
                 .role(workspaceMembersRequest.getRole())
                 .build();
         workspaceMembersRepository.save(workspaceMembers);
@@ -63,9 +72,12 @@ public class WorkspaceMembersService {
         return new WorkspaceMembersResponse(workspaceMembers);
     }
 
-    public void deleteWorkspaceMembers(Long id){
-        if(workspaceMembersRepository.existsById(id)) {
-            WorkspaceMembers workspaceMembers = workspaceMembersRepository.findById(id).get();
+    public void deleteWorkspaceMembers(WorkspaceMembersRequest workspaceMembersRequest){
+        Profile profile = profileRepository.findById(workspaceMembersRequest.getProfileId()).get();
+        Workspace workspace = workspaceRepository.findById(workspaceMembersRequest.getWorkspaceId()).get();
+
+        if(workspaceMembersRepository.existsByProfileAndWorkspace(profile, workspace)) {
+            WorkspaceMembers workspaceMembers = workspaceMembersRepository.findByProfileAndWorkspace(profile, workspace).get();
             workspaceMembersRepository.delete(workspaceMembers);
         }
     }

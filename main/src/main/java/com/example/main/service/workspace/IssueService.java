@@ -2,14 +2,14 @@ package com.example.main.service.workspace;
 
 import com.example.main.DTO.request.workspace.IssueRequest;
 import com.example.main.DTO.response.workspace.IssueResponse;
-import com.example.main.DTO.response.workspace.ProfileIssuesResponse;
 import com.example.main.entity.workspace.Issue;
 import com.example.main.entity.workspace.ProfileIssues;
 import com.example.main.repository.workspace.IssueRepository;
+import com.example.main.repository.workspace.ProfileIssuesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,6 +22,8 @@ public class IssueService {
 
     @Autowired
     private IssueRepository issueRepository;
+    @Autowired
+    private ProfileIssuesRepository profileIssuesRepository;
 
     public IssueResponse getIssue(Long id) {
         Issue issue = null;
@@ -46,8 +48,8 @@ public class IssueService {
 
 
     public IssueResponse createIssue(String date, IssueRequest issueRequest){
-        LocalDate date2 = LocalDate.parse(date, formatter);
-        ZonedDateTime result = date2.atStartOfDay(ZoneId.systemDefault());
+        LocalDateTime date2 = LocalDateTime.parse(date, formatter);
+        ZonedDateTime result = date2.atZone(ZoneId.of("Europe/Warsaw"));
 
         Issue issue = Issue.builder()
                 .issueName(issueRequest.getIssueName())
@@ -58,15 +60,15 @@ public class IssueService {
         return new IssueResponse(issue);
     }
 
-    public IssueResponse updateIssue(IssueRequest issueRequest){
+    public IssueResponse updateIssue(String date, IssueRequest issueRequest){
+        LocalDateTime date2 = LocalDateTime.parse(date, formatter);
+        ZonedDateTime result = date2.atZone(ZoneId.of("Europe/Warsaw"));
         Issue issue = null;
         if(issueRepository.existsById(issueRequest.getIssueId())) {
             issue = issueRepository.findById(issueRequest.getIssueId()).get();
             issue.setIssueName(issue.getIssueName());
-            issue.setProfileIssuesSet(issueRequest.getProfileIssuesSet());
             issue.setState(issueRequest.getState());
-            issue.setDeadline(issueRequest.getDeadline());
-            issue.setStatesSet(issueRequest.getStates());
+            issue.setDeadline(result);
             issueRepository.save(issue);
         }
         return new IssueResponse(issue);
@@ -75,6 +77,12 @@ public class IssueService {
     public void deleteIssue(Long id){
         if(issueRepository.existsById(id)) {
             Issue issue = issueRepository.findById(id).get();
+            if(profileIssuesRepository.existsByIssue(issue)){
+                List<ProfileIssues> profileIssuesList = profileIssuesRepository.findAllByIssue(issue);
+                for (ProfileIssues pf :profileIssuesList) {
+                    profileIssuesRepository.deleteById(pf.getPiId());
+                }
+            }
             issueRepository.delete(issue);
         }
     }

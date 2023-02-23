@@ -33,4 +33,10 @@ public class ProfileIssuesController {
         ProfileIssuesResponse profileIssueResponse = profileIssueService.createProfileIssues(profileIssueRequest);
         return ResponseEntity.ok(profileIssueResponse);
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteProfileIssue(ProfileIssuesRequest profileIssueRequest){
+        profileIssueService.deleteProfileIssues(profileIssueRequest);
+        return ResponseEntity.ok().build();
+    }
 }

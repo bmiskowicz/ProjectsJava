@@ -1,5 +1,6 @@
 package com.example.main.repository.workspace;
 
+import com.example.main.entity.Profile;
 import com.example.main.entity.workspace.Workspace;
 import com.example.main.entity.workspace.WorkspaceMembers;
 import org.springframework.data.domain.Sort;
@@ -20,8 +21,10 @@ public interface WorkspaceMembersRepository extends JpaRepository<WorkspaceMembe
     List<WorkspaceMembers> findAllById(Iterable<Long> longs);
 
     Optional<WorkspaceMembers> findById(Long aLong);
+    Optional<WorkspaceMembers> findByProfileAndWorkspace(Profile profile, Workspace workspace);
 
     boolean existsById(Long aLong);
+    boolean existsByProfileAndWorkspace(Profile profile, Workspace workspace);
 
     void deleteById(Long aLong);
 

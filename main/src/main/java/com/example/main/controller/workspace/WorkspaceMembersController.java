@@ -1,5 +1,6 @@
 package com.example.main.controller.workspace;
 
+import com.example.main.DTO.request.workspace.ProfileIssuesRequest;
 import com.example.main.DTO.request.workspace.WorkspaceMembersRequest;
 import com.example.main.DTO.response.workspace.WorkspaceMembersResponse;
 import com.example.main.service.workspace.WorkspaceMembersService;
@@ -44,4 +45,11 @@ public class WorkspaceMembersController {
         WorkspaceMembersResponse workspaceMembersResponse = workspaceMembersService.createWorkspaceMembers(workspaceMembersRequest);
         return ResponseEntity.ok(workspaceMembersResponse);
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteWorkspaceMembers(WorkspaceMembersRequest workspaceMembersRequest){
+        workspaceMembersService.deleteWorkspaceMembers(workspaceMembersRequest);
+        return ResponseEntity.ok().build();
+    }
+
 }
