@@ -77,12 +77,11 @@ public class IssueService {
     public void deleteIssue(Long id){
         if(issueRepository.existsById(id)) {
             Issue issue = issueRepository.findById(id).get();
-            if(profileIssuesRepository.existsByIssue(issue)){
-                List<ProfileIssues> profileIssuesList = profileIssuesRepository.findAllByIssue(issue);
-                for (ProfileIssues pf :profileIssuesList) {
-                    profileIssuesRepository.deleteById(pf.getPiId());
-                }
-            }
+
+            //deleting issues relations to profiles
+            List<ProfileIssues> profileIssuesList = profileIssuesRepository.findAllByIssue(issue);
+            profileIssuesRepository.deleteAll(profileIssuesList);
+
             issueRepository.delete(issue);
         }
     }

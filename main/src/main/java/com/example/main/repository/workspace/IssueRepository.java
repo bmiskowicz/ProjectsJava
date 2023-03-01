@@ -1,6 +1,7 @@
 package com.example.main.repository.workspace;
 
 import com.example.main.entity.workspace.Issue;
+import com.example.main.entity.workspace.Workspace;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -25,4 +26,7 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
     void deleteById(Long aLong);
 
     void deleteAllById(Iterable<? extends Long> longs);
+
+
+    void deleteAllByWorkspaceId(Long along);
 }

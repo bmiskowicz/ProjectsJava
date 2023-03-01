@@ -1,6 +1,5 @@
 package com.example.main.controller.workspace;
 
-import com.example.main.DTO.request.workspace.ProfileIssuesRequest;
 import com.example.main.DTO.request.workspace.WorkspaceMembersRequest;
 import com.example.main.DTO.response.workspace.WorkspaceMembersResponse;
 import com.example.main.service.workspace.WorkspaceMembersService;
@@ -40,7 +39,7 @@ public class WorkspaceMembersController {
         return ResponseEntity.ok(workspaceMembersResponse);
     }
 
-    @PostMapping("/post")
+    @PostMapping("")
     public ResponseEntity<?> postWorkspaceMembers(WorkspaceMembersRequest workspaceMembersRequest){
         WorkspaceMembersResponse workspaceMembersResponse = workspaceMembersService.createWorkspaceMembers(workspaceMembersRequest);
         return ResponseEntity.ok(workspaceMembersResponse);

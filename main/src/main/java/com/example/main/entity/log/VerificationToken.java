@@ -44,7 +44,3 @@ public class VerificationToken {
         this.token = token;
     }
 }
-
-
-//TODO:                                 auto-deleting old tokens
-//TODO after creating frontend:         check if JTW tokens work in login and logout

@@ -34,7 +34,6 @@ public class ChatService {
         Chat chat = Chat.builder()
                 .chatId(chatRequest.getChatId())
                 .issueId(chatRequest.getIssueId())
-                // TODO SPRAWDZIĆ CZY BUILDER SAM STWORZY messageSet
                 .build();
         chatRepository.save(chat);
         return new ChatResponse(chat);

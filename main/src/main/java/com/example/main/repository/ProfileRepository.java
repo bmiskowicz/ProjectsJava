@@ -1,6 +1,7 @@
 package com.example.main.repository;
 
 import com.example.main.entity.Profile;
+import com.example.main.entity.log.Login;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -19,6 +20,7 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
 
     Optional<Profile> findById(Long aLong);
 
+    Optional<Profile> findByLogin(Login login);
 
     boolean existsById(Long aLong);
 

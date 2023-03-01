@@ -3,6 +3,7 @@ package com.example.main.repository.workspace;
 import com.example.main.entity.Profile;
 import com.example.main.entity.workspace.Issue;
 import com.example.main.entity.workspace.ProfileIssues;
+import com.example.main.entity.workspace.Workspace;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -21,6 +22,7 @@ public interface ProfileIssuesRepository extends JpaRepository<ProfileIssues, Lo
     List<ProfileIssues> findAll(Sort sort);
 
     List<ProfileIssues> findAllById(Iterable<Long> longs);
+    List<ProfileIssues> findAllByProfile(Profile profile);
 
     boolean existsById(Long aLong);
     boolean existsByIssue(Issue issue);
@@ -31,4 +33,6 @@ public interface ProfileIssuesRepository extends JpaRepository<ProfileIssues, Lo
     void deleteByIssue(Issue issue);
 
     void deleteAllById(Iterable<? extends Long> longs);
+
+    void deleteAllByProfile(Profile profile);
 }

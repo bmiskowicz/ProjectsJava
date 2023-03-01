@@ -5,10 +5,13 @@ import com.example.main.DTO.response.workspace.WorkspaceResponse;
 import com.example.main.config.security.JWTUtils;
 import com.example.main.entity.Profile;
 import com.example.main.entity.log.Login;
+import com.example.main.entity.workspace.Issue;
 import com.example.main.entity.workspace.Workspace;
 import com.example.main.entity.workspace.WorkspaceMembers;
 import com.example.main.repository.ProfileRepository;
 import com.example.main.repository.log.LoginRepository;
+import com.example.main.repository.workspace.IssueRepository;
+import com.example.main.repository.workspace.WorkspaceInvitationRepository;
 import com.example.main.repository.workspace.WorkspaceMembersRepository;
 import com.example.main.repository.workspace.WorkspaceRepository;
 import com.example.main.util.WorkspaceRole;
@@ -38,7 +41,12 @@ public class WorkspaceService {
 
     @Autowired
     JWTUtils jwtUtils;
-
+    @Autowired
+    private WorkspaceInvitationRepository workspaceInvitationRepository;
+    @Autowired
+    private IssueRepository issueRepository;
+    @Autowired
+    private IssueService issueService;
 
     public List<WorkspaceResponse> getAllWorkspaces() {
         return workspaceRepository.findAll().stream()
@@ -85,7 +93,16 @@ public class WorkspaceService {
     public void deleteWorkspace(Long id){
         if(workspaceRepository.existsById(id)) {
             Workspace workspace = workspaceRepository.findById(id).get();
+
+            //deleting issues and all issue-related stuff
+            List<Issue> issueList = issueRepository.findAllByWorkspaceId(workspace.getWorkspaceId());
+            for (Issue issue: issueList) {
+                issueService.deleteIssue(issue.getIssueId());
+            }
+
+            //Deleting relations with members and invitations
             workspaceMembersRepository.deleteAllByWorkspace(workspace);
+            workspaceInvitationRepository.deleteAllByWorkspace(workspace);
             workspaceRepository.delete(workspace);
         }
     }

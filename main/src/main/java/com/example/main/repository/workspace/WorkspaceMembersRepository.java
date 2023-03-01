@@ -7,7 +7,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,8 +29,12 @@ public interface WorkspaceMembersRepository extends JpaRepository<WorkspaceMembe
 
     void delete(WorkspaceMembers entity);
 
-    ArrayList<WorkspaceMembers> findAllByWorkspace(Workspace workspace);
+    List<WorkspaceMembers> findAllByWorkspace(Workspace workspace);
+    List<WorkspaceMembers> findAllByProfile(Profile profile);
 
     void deleteAllByWorkspace(Workspace workspace);
+
+
+    void deleteAllByProfile(Profile profile);
 
 }

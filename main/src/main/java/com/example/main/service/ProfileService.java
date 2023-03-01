@@ -7,6 +7,9 @@ import com.example.main.entity.log.Login;
 import com.example.main.entity.Profile;
 import com.example.main.repository.ProfileRepository;
 import com.example.main.repository.log.LoginRepository;
+import com.example.main.repository.workspace.ProfileIssuesRepository;
+import com.example.main.repository.workspace.WorkspaceInvitationRepository;
+import com.example.main.repository.workspace.WorkspaceMembersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,12 @@ public class ProfileService {
     private ProfileRepository profileRepository;
     @Autowired
     LoginRepository loginRepository;
+    @Autowired
+    private WorkspaceMembersRepository workspaceMembersRepository;
+    @Autowired
+    private WorkspaceInvitationRepository workspaceInvitationRepository;
+    @Autowired
+    private ProfileIssuesRepository profileIssuesRepository;
 
     public List<ProfileResponse> getAllProfiles() {
         return profileRepository.findAll().stream()
@@ -64,6 +73,9 @@ public class ProfileService {
         if(profileRepository.existsById(id)) {
             Profile profile = profileRepository.findById(id).get();
             Login login = profile.getLogin();
+            workspaceMembersRepository.deleteAllByProfile(profile);
+            workspaceInvitationRepository.deleteAllByProfile(profile);
+            profileIssuesRepository.deleteAllByProfile(profile);
             profileRepository.delete(profile);
             loginRepository.delete(login);
         }
