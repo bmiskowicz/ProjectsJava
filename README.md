@@ -1,5 +1,5 @@
-# ProjectsJava
-Project Management API
+# Projects Management System API
+
 REST API created using Java with Spring framework. This application provides powerful tools to create, manage projects and tasks within it. 
 
 Features:
